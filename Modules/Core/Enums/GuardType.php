@@ -4,12 +4,12 @@ namespace Modules\Core\Enums;
 
 enum GuardType: string
 {
-    case USER = 'user';
+    case API = 'api';
 
     public static function guards()
     {
         return [
-            self::USER->value,
+            self::API->value,
         ];
     }
 }

@@ -9,8 +9,8 @@ class OtpRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone'    => ['required_without:email', 'string'],
-            'code'     => ['required', 'string', 'size:6'],
+            'login_field' => ['required', 'string'],
+            'code' => ['required', 'string', 'size:6'],
         ];
     }
 }

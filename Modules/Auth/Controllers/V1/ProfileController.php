@@ -39,22 +39,4 @@ class ProfileController extends BaseController
         $this->profileService->delete(Auth::user()->id);
         return (new Response())->success(message: "Profile deleted successfully.");
     }
-
-    public function phoneUpdateRequest(PhoneUpdateRequestRequest $request)
-    {
-        $this->profileService->phoneUpdateRequest(Auth::user()->id, PhoneUpdateRequestDTO::fromRequest($request));
-        return (new Response())->success(message: "Request update phone successfully.");
-    }
-
-    public function phoneUpdateSendOtp(PhoneUpdateSendOtpRequest $request)
-    {
-        $this->profileService->phoneUpdateSendOtp(PhoneUpdateSendOtpDTO::fromRequest($request));
-        return (new Response())->success(message: "OTP sent successfully.");
-    }
-
-    public function phoneUpdateCheckOtp(PhoneUpdateCheckOtpRequest $request)
-    {
-        $this->profileService->phoneUpdateCheckOtp(PhoneUpdateCheckOtpDTO::fromRequest($request));
-        return (new Response())->success(message: "OTP checked successfully.");
-    }
 }

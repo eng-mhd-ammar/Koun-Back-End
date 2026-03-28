@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Auth\Enums\Gender;
 
 return new class () extends Migration {
     /**
@@ -12,21 +13,24 @@ return new class () extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('photo')->nullable();
+            $table->string('avatar')->nullable();
+
             $table->string('first_name');
-            $table->string('last_name');
+            $table->string('last_name')->nullable();
+
             $table->string('username')->nullable();
+
             $table->string('phone');
             $table->timestamp('phone_verified_at')->nullable();
-            $table->string('password');
-            $table->date('birthday')->nullable();
-            $table->boolean('gender')->default(1)->comment('0 => female, 1 => male');
-            $table->string('code')->nullable();
-            $table->timestamp('code_expired_at')->nullable();
 
-            $table->string('new_phone')->nullable();
-            $table->string('new_phone_code')->nullable();
-            $table->timestamp('new_phone_code_expired_at')->nullable();
+            $table->string('email');
+            $table->timestamp('email_verified_at')->nullable();
+
+            $table->string('password');
+
+            $table->date('birthday')->nullable();
+
+            $table->tinyInteger('gender')->default(Gender::MALE->value)->comment(Gender::tableComment());
 
             $table->softDeletes();
             $table->timestamps();
@@ -55,6 +59,6 @@ return new class () extends Migration {
     {
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
-        // Schema::dropIfExists('sessions');
+        Schema::dropIfExists('sessions');
     }
 };

@@ -26,7 +26,7 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'photo' => $this->photo_url,
+            'avatar' => $this->avatar_url,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'full_name' => $this->full_name,
@@ -35,18 +35,18 @@ class UserResource extends JsonResource
             'birthday' => \Carbon\Carbon::parse($this->birthday)->format('Y-m-d'),
             'gender' => $this->gender,
 
-            'addresses' => AddressResource::collection($this->whenLoaded('addresses')),
-            'roles' => RoleResource::collection($this->whenLoaded('roles')),
-            'policies' => PolicyResource::collection($this->whenLoaded('policies')),
-            'user_topics' => UserTopicResource::collection($this->whenLoaded('userTopics')),
-            'topics' => TopicResource::collection($this->whenLoaded('topics')),
-            'fcm_tokens' => FcmTokenResource::collection($this->whenLoaded('fcmTokens')),
-            'suggestions' => SuggestionResource::collection($this->whenLoaded('suggestions')),
-            'coupon_users' => CouponUserResource::collection($this->whenLoaded('couponUsers')),
-            'allowed_coupons' => CouponResource::collection($this->whenLoaded('allowedCoupons')),
-            'referring_coupons' => CouponResource::collection($this->whenLoaded('referringCoupons')),
-            'coupon_usages' => CouponResource::collection($this->whenLoaded('couponUsages')),
-            'coupon_usage_details' => CouponUsageResource::collection($this->whenLoaded('couponUsageDetails')),
+            // 'addresses' => AddressResource::collection($this->whenLoaded('addresses')),
+            // 'roles' => RoleResource::collection($this->whenLoaded('roles')),
+            // 'policies' => PolicyResource::collection($this->whenLoaded('policies')),
+            // 'user_topics' => UserTopicResource::collection($this->whenLoaded('userTopics')),
+            // 'topics' => TopicResource::collection($this->whenLoaded('topics')),
+            // 'fcm_tokens' => FcmTokenResource::collection($this->whenLoaded('fcmTokens')),
+            // 'suggestions' => SuggestionResource::collection($this->whenLoaded('suggestions')),
+            // 'coupon_users' => CouponUserResource::collection($this->whenLoaded('couponUsers')),
+            // 'allowed_coupons' => CouponResource::collection($this->whenLoaded('allowedCoupons')),
+            // 'referring_coupons' => CouponResource::collection($this->whenLoaded('referringCoupons')),
+            // 'coupon_usages' => CouponResource::collection($this->whenLoaded('couponUsages')),
+            // 'coupon_usage_details' => CouponUsageResource::collection($this->whenLoaded('couponUsageDetails')),
         ];
     }
 }

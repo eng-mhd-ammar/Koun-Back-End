@@ -70,26 +70,15 @@ class JWTToken
         }
     }
 
-    public static function isCustomer()
+    public static function isUser()
     {
-        return Auth::user()->is_customer;
-        return self::guard() == GuardType::CUSTOMER->value;
+        return Auth::user()->is_user;
     }
     public static function isAdmin()
     {
         return Auth::user()->is_admin;
-        return self::guard() == GuardType::ADMIN->value;
     }
-    public static function isDelivery()
-    {
-        return Auth::user()->is_delivery;
-        return self::guard() == GuardType::DELIVERY->value;
-    }
-    public static function isSupport()
-    {
-        return Auth::user()->is_support;
-        return self::guard() == GuardType::SUPPORT->value;
-    }
+
     public static function isGuest()
     {
         return !in_array(self::guard(), GuardType::guards());

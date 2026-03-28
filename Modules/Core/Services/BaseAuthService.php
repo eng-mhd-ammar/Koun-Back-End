@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Modules\Core\DTO\ResetPasswordDTO;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Auth\Enums\VerificationCodeType;
+use Modules\Auth\Models\VerificationCode;
 use Modules\Core\DTO\ChangePasswordDTO;
 use Modules\Core\DTO\BaseDTO;
 use Modules\Core\Exceptions\AuthException;
@@ -25,23 +27,28 @@ class BaseAuthService
 
     public function login(BaseDTO $DTO): array
     {
-        $model = $this->model::whereAny($this->columns, $DTO->getLoginFieldValue())->firstOr(fn () => $this->throwInvalidCredentials());
+        $model = $this->model::whereAny($this->columns, $DTO->loginField)->firstOr(fn () => $this->throwInvalidCredentials());
         if ($this->checkActivity) {
             $model->is_active === true ?: $this->throwActivationException();
         }
 
-        if ($DTO->phone && $model->phone_verified_at === null) {
+        if ($DTO->loginField === $model->phone && $model->phone_verified_at === null) {
             $this->throwUnverifiedPhoneAccount();
         }
+
+        if ($DTO->loginField === $model->email && $model->email_verified_at === null) {
+            $this->throwUnverifiedMailAccount();
+        }
+
         if (!Hash::check($DTO->password, $model->password)) {
             $this->throwInvalidCredentials();
         }
 
-        $tokens = JWTToken::tokens($model->id, $this->guard);
+        $data['tokens'] = JWTToken::tokens($model->id, $this->guard, $model->is_admin);
 
-        $tokens['profile'] = UserResource::make($model);
+        $data['profile'] = UserResource::make($model);
 
-        return $tokens;
+        return $data;
     }
 
     public function register(BaseDTO $DTO)
@@ -50,12 +57,12 @@ class BaseAuthService
 
         $data = UserResource::make($model);
 
-        $this->sendCode(new CodeDTO($model->phone));
+        $this->sendCode(new CodeDTO($DTO->email?? $DTO->phone));
 
         return $data;
     }
 
-    public function refresh(/*string $modelId*/): array
+    public function refresh(): array
     {
         $refreshToken = request()->input('refresh_token');
 
@@ -82,101 +89,64 @@ class BaseAuthService
         return $data;
     }
 
-    // public function refresh(string $modelId): array
-    // {
-    //     $refreshToken = request()->cookie('refresh_token');
-    //     if(!$refreshToken) $this->throwInvalidRefreshToken();
-
-    //     $payload = JWTAuth::setToken($refreshToken)->getPayload();
-    //     $userId  = $payload['sub'] ?? null;
-    //     $guard   = $payload['guard'] ?? 'user';
-
-    //     if(!$userId) $this->throwInvalidRefreshToken();
-
-    //     $accessToken = JWTToken::accessTokenById($modelId);
-    //     if(!$accessToken) $this->throwInvalidTokenProvided();
-
-    //     $newRefreshToken = JWTToken::refreshTokenById($userId, $guard);
-
-    //     return [
-    //         'access_token' => $accessToken,
-    //         'refresh_token' => $newRefreshToken,
-    //     ];
-    // }
-
     public function sendCode(CodeDTO $DTO)
     {
-        $model = $this->model::query()
-                ->where('phone', $DTO->phone)
-                ->firstOrFail();
+        $model = $this->model::query()->whereAny(['phone', 'email'], $DTO->loginField)->firstOrFail();
 
-        $code = $this->getRandomCode();
+        $code = $this->generateRandomString();
 
-        $model = $model->update(['code' => $code, 'code_expired_at' => now()->addMinutes(10)]);
+        $type = null;
 
-        // dump('sms', $code); // Send SMS
+        if($this->isEmail($DTO->loginField)) {
+            $type = VerificationCodeType::EMAIL_VERIFICATION->value;
+            // send to email
+        } else {
+            $type = VerificationCodeType::PHONE_VERIFICATION->value;
+            // send to phone
+        }
+
+        $data = [
+            'code' => $code,
+            'expired_at' => now()->addMinutes(10),
+        ];
+
+        $attributes = [
+            'type'   => $type,
+            'target' => $DTO->loginField,
+        ];
+
+        $model = $model->verificationCodes()->updateOrCreate($attributes, $data);
     }
 
     public function checkOTP(OtpDTO $DTO)
     {
-        $model = $this->model::query()
-            ->where('phone', $DTO->phone)
-            ->firstOrFail();
+        $model = VerificationCode::query()->where('target', $DTO->loginField)->whereNull('verified_at')->orderBy('created_at', 'desc')->firstOrFail();
 
-        if ($model->code != $DTO->code) {
+        if ($model->code != strtoupper($DTO->code)) {
             $this->throwInvalidOTP();
         }
 
-        if (now()->greaterThan($model->code_expired_at)) {
+        if (now()->greaterThan($model->expired_at)) {
             $this->throwOtpTimeout();
         }
 
-        if ($this->checkActivity && $model->is_active === false) {
-            $this->throwActivationException();
-        }
-        if (strtolower(request()->header('type')) == "reset") {
-            return JWTToken::resetToken($model->id, $this->guard);
-        } else {
+        $model->update(['verified_at' => now()]);
 
-            if ($this->markAsActivated) {
-                $model->markAsPhoneVerified();
-            }
+        $data['tokens'] = JWTToken::tokens($model->user->id, $this->guard, $model->is_admin);
 
-            return JWTToken::tokens($model->id, $this->guard);
-        }
+        $data['profile'] = UserResource::make($model->user);
+
+        return $data;
     }
 
-    public function resetPassword(ResetPasswordDTO $DTO)
+    private function generateRandomString(int $length = 6): string
     {
-        Auth::shouldUse($this->guard);
-        JWTAuth::setToken(request()->get('reset_token'));
-        $model = JWTAuth::authenticate();
-
-        $payload = JWTAuth::getPayload();
-        if ($payload['utt'] === 'RESET' && $payload['guard'] === $this->guard) {
-            $model->update(['password' => $DTO->password]);
-            JWTAuth::invalidate(JWTAuth::getToken());
-        } else {
-            $this->throwInvalidTokenProvided();
-        }
+        return substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, $length);
     }
 
-    public function changePassword(ChangePasswordDTO $DTO)
+    private function isEmail(string $text): bool
     {
-        $model = Auth::guard($this->guard)->user();
-        if (!Hash::check($DTO->old_password, $model->password)) {
-            $this->throwInvalidOldPassword();
-        }
-        if ($DTO->old_password == $DTO->new_password) {
-            $this->throwInvalidNewPassword();
-        }
-
-        $model->update(['password' => $DTO->new_password]);
-    }
-
-    private function getRandomCode(): string
-    {
-        return 123456; // rand(100000, 999999);
+        return filter_var($text, FILTER_VALIDATE_EMAIL) !== false;
     }
 
     public function throwInvalidCredentials()

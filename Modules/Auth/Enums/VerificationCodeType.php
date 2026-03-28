@@ -2,23 +2,17 @@
 
 namespace Modules\Auth\Enums;
 
-enum Gender: int
+enum VerificationCodeType: int
 {
-    case FEMALE = 0;
-    case MALE = 1;
+    case EMAIL_VERIFICATION = 1;
+    case PHONE_VERIFICATION = 2;
+    case PASSWORD_RESET = 3;
+    case NEW_EMAIL = 4;
+    case NEW_PHONE = 5;
 
     public function label(): string
     {
         return ucfirst(strtolower(str_replace('_', ' ', $this->name)));
-    }
-
-    public static function fromInt(int|string $value): ?self
-    {
-        return match ((int) $value) {
-            0 => self::FEMALE,
-            1 => self::MALE,
-            default => null,
-        };
     }
 
     public static function tableComment(): string

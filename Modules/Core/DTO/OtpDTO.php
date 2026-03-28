@@ -7,7 +7,7 @@ use Modules\Core\Requests\OtpRequest;
 class OtpDTO extends BaseDTO
 {
     public function __construct(
-        public ?string $phone,
+        public ?string $loginField,
         public ?string $code,
     ) {
     }
@@ -15,7 +15,7 @@ class OtpDTO extends BaseDTO
     public static function fromRequest(OtpRequest $request): self
     {
         return new self(
-            phone: $request->validated('phone'),
+            loginField: $request->validated('login_field'),
             code: $request->validated('code'),
         );
     }

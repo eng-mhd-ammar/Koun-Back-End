@@ -9,8 +9,8 @@ use Modules\Core\Services\BaseAuthService;
 class AuthService extends BaseAuthService implements AuthServiceInterface
 {
     protected string $model = User::class;
-    protected string $guard = 'user';
+    protected string $guard = 'api';
     protected bool $checkActivity = false;
-    protected array $columns = ['phone', 'username'];
+    protected array $columns = ['phone', 'username', 'email'];
     protected bool $markAsActivated = true;
 }

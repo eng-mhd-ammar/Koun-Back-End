@@ -8,8 +8,7 @@ use Modules\Core\DTO\BaseDTO;
 class LoginDTO extends BaseDTO
 {
     public function __construct(
-        public ?string $phone,
-        public ?string $username,
+        public ?string $loginField,
         public ?string $password,
     ) {
     }
@@ -17,14 +16,8 @@ class LoginDTO extends BaseDTO
     public static function fromRequest(LoginRequest $request): self
     {
         return new self(
-            phone: $request->validated('phone'),
-            username: $request->validated('username'),
+            loginField: $request->validated('login_field'),
             password: $request->validated('password')
         );
-    }
-
-    public function getLoginFieldValue()
-    {
-        return $this->phone ?? $this->username;
     }
 }

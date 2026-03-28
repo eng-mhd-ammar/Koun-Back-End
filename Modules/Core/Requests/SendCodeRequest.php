@@ -9,7 +9,7 @@ class SendCodeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone'    => ['required_without:email', 'string'],
+            'login_field' => ['required', 'string'],
         ];
     }
 }
