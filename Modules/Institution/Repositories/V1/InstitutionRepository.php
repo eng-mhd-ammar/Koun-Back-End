@@ -25,6 +25,7 @@ class InstitutionRepository extends BaseRepository implements InstitutionReposit
     {
         return [
             AllowedInclude::relationship('owner'),
+            AllowedInclude::relationship('branches'),
         ];
     }
 }

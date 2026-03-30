@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\Observers\CascadeSoftDeleteObserver;
 use Modules\Core\Observers\SyncFilesObserver;
@@ -23,9 +24,7 @@ class Institution extends Model
 
     public string $logChannel = "institution";
 
-    public array $FilesFields = ['logo', 'attachments'];
-
-    // public array $cascadeDeletes = ['branches'];
+    public array $cascadeDeletes = ['branches'];
 
     protected $guard_name = 'api';
 
@@ -61,13 +60,13 @@ class Institution extends Model
         );
     }
 
-    public function owner()
+    public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'owner_id', 'id');
     }
 
-    // public function verificationCodes(): HasMany
-    // {
-    //     return $this->hasMany(VerificationCode::class, 'user_id', 'id');
-    // }
+    public function branches(): HasMany
+    {
+        return $this->hasMany(Branch::class, 'institution_id', 'id');
+    }
 }

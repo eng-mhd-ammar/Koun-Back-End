@@ -5,8 +5,10 @@ namespace Modules\Institution\Resources\V1;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Auth\Resources\V1\UserResource;
+use Modules\Institution\Models\Institution;
+use Modules\Institution\Resources\V1\InstitutionResource;
 
-class InstitutionResource extends JsonResource
+class BranchResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,18 +19,14 @@ class InstitutionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'logo' => $this->logo_url,
             'name' => $this->name,
             'description' => $this->description,
+            'institution_id' => $this->institution_id,
             'phone' => $this->phone,
             'email' => $this->email,
-            'type' => $this->type->label(),
-            'is_active' => $this->is_active,
-            'gender' => $this->gender,
-            'attachments' => $this->attachments_urls,
+            'is_main_branch' => $this->is_main_branch,
 
-            'owner' => new UserResource($this->whenLoaded('owner')),
-            'branches' => BranchResource::collection($this->whenLoaded('branches')),
+            'institution' => new InstitutionResource($this->whenLoaded('institution')),
         ];
     }
 }

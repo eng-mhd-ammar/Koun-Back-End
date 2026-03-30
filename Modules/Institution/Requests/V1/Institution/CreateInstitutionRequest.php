@@ -17,7 +17,7 @@ class CreateInstitutionRequest extends FormRequest
         return [
             'logo' => [new FileOrUrl(['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'tif', 'webp', 'heic', 'heif', 'svg'])],
             'name' => ['required', 'string'],
-            'description' => ['required', 'string'],
+            'description' => ['string'],
             'owner_id' => ['string', new NotSoftDeleted(User::class), 'default:' . auth()->id(), new ProhibitedUnlessHasRole(['admin'])],
             'phone' => ['required', 'string', 'regex:/^\+9639\d{8}$/'],
             'email' => ['required', 'email'],
