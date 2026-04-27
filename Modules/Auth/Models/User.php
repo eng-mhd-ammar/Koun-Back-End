@@ -74,6 +74,13 @@ class User extends Authenticatable implements JWTSubject
         );
     }
 
+    public function isDelivery(): Attribute
+    {
+        return new Attribute(
+            get: fn () => Auth::guard('api')->check() && $this->hasRole('delivery'),
+        );
+    }
+
     public function avatarUrl(): Attribute
     {
         return new Attribute(

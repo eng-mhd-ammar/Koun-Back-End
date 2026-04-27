@@ -3,7 +3,6 @@
 namespace Modules\Institution\Providers\UserBranch;
 
 use Illuminate\Support\ServiceProvider;
-use Modules\Institution\Providers\Branch\BranchServiceProvider;
 use Modules\Institution\Interfaces\V1\UserBranch\UserBranchRepositoryInterface;
 use Modules\Institution\Interfaces\V1\UserBranch\UserBranchServiceInterface;
 use Modules\Institution\Repositories\V1\UserBranchRepository;

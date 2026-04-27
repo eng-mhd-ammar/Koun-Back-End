@@ -4,15 +4,12 @@ namespace Modules\Institution\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\Observers\CascadeSoftDeleteObserver;
-use Modules\Core\Observers\SyncFilesObserver;
 use Modules\Core\Observers\CRUDObserver;
-use Modules\Institution\Enums\InstitutionType;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Auth\Models\User;
 use Modules\Donation\Models\Donation;

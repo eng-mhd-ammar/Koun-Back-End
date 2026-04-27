@@ -11,7 +11,6 @@ class UserInstitutionDTO extends BaseDTO
     public function __construct(
         public ?string $user_id,
         public ?string $institution_id,
-        public ?bool $is_admin,
     ) {
     }
 
@@ -20,7 +19,6 @@ class UserInstitutionDTO extends BaseDTO
         return new self(
             user_id: $request->validated('user_id'),
             institution_id: $request->validated('institution_id'),
-            is_admin: $request->validated('is_admin'),
         );
     }
 }

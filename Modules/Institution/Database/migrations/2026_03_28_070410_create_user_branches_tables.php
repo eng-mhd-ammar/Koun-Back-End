@@ -1,11 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Modules\Institution\Enums\InstitutionType;
 
 return new class () extends Migration {
     /**
@@ -18,7 +15,6 @@ return new class () extends Migration {
 
             $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->boolean('is_admin')->default(false);
 
             $table->softDeletes();
             $table->timestamps();

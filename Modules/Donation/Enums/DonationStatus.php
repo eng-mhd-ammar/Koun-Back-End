@@ -7,8 +7,6 @@ enum DonationStatus: int
     case REJECTED = -1;
     case PENDING = 0;
     case APPROVED = 1;
-    case IN_TRANSIT = 2;
-    case RECEIVED = 3;
 
     public function label(): string
     {

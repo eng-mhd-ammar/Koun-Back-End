@@ -5,8 +5,6 @@ namespace Modules\Institution\Resources\V1;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Auth\Resources\V1\UserResource;
-use Modules\Institution\Models\Institution;
-use Modules\Institution\Resources\V1\InstitutionResource;
 
 class UserInstitutionResource extends JsonResource
 {
@@ -19,7 +17,6 @@ class UserInstitutionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'is_admin' => $this->is_admin,
 
             'user' => new UserResource($this->whenLoaded('user')),
             'institution' => new InstitutionResource($this->whenLoaded('institution')),

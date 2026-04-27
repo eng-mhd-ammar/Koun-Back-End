@@ -142,8 +142,11 @@ class BaseDTO
         return $data;
     }
 
-    public static function prepareDateTime($date) {
-        if(is_null($date)) return null;
+    public static function prepareDateTime($date)
+    {
+        if (is_null($date)) {
+            return null;
+        }
         return \Carbon\Carbon::parse($date)->format('Y-m-d H:i');
     }
 }

@@ -27,7 +27,8 @@ class Unit extends Model
         'description' => 'string',
     ];
 
-    public function donationItems(): HasMany {
+    public function donationItems(): HasMany
+    {
         return $this->hasMany(DonationItem::class, 'unit_id', 'id');
     }
 }

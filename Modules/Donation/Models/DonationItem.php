@@ -5,12 +5,11 @@ namespace Modules\Donation\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\Observers\CRUDObserver;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['donation_id', 'unit_id', 'name', 'description', 'quantity', 'notes'])]
+#[Fillable(['donation_id', 'unit_id', 'donation_type_id', 'name', 'description', 'quantity', 'notes'])]
 #[ObservedBy([CRUDObserver::class])]
 class DonationItem extends Model
 {
@@ -22,6 +21,7 @@ class DonationItem extends Model
     protected $casts = [
         'donation_id' => 'string',
         'unit_id' => 'string',
+        'donation_type_id' => 'string',
         'name' => 'string',
         'description' => 'string',
         'quantity' => 'string',
@@ -31,6 +31,11 @@ class DonationItem extends Model
     public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class, 'unit_id', 'id');
+    }
+
+    public function donationType(): BelongsTo
+    {
+        return $this->belongsTo(DonationType::class, 'donation_type_id', 'id');
     }
 
     public function donation(): BelongsTo

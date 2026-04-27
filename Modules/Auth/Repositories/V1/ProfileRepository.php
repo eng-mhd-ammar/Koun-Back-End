@@ -15,7 +15,7 @@ class ProfileRepository extends BaseRepository implements ProfileRepositoryInter
     {
         return [
             AllowedInclude::relationship('roles'),
-            
+
             AllowedInclude::relationship('owned_institutions', 'ownedInstitutions'),
             AllowedInclude::relationship('member_institutions', 'memberInstitutions'),
 

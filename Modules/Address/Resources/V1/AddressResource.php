@@ -4,7 +4,6 @@ namespace Modules\Address\Resources\V1;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\Auth\Resources\V1\UserResource;
 use Modules\Institution\Resources\V1\BranchResource;
 
 class AddressResource extends JsonResource

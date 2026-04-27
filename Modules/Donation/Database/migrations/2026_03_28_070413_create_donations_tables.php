@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,14 +17,13 @@ return new class () extends Migration {
             $table->foreignId('sender_branch_id')->nullable()->constrained('branches')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('sender_user_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->foreignId('receiver_branch_id')->nullable()->constrained('branches')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('receiver_user_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-
             $table->string('title');
             $table->string('description')->nullable();
-            $table->tinyInteger('status')->default(0)->comment(DonationStatus::tableComment());
+
+            $table->tinyInteger('status')->default(DonationStatus::PENDING->value)->comment(DonationStatus::tableComment());
+
             $table->dateTime('sent_at')->nullable();
-            $table->dateTime('received_at')->nullable();
+
             $table->text('notes')->nullable();
 
             $table->softDeletes();

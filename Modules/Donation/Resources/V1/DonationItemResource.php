@@ -1,12 +1,9 @@
 <?php
 
-namespace Modules\Address\Resources\V1;
+namespace Modules\Donation\Resources\V1;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\Auth\Resources\V1\UserResource;
-use Modules\Donation\Resources\V1\DonationResource;
-use Modules\Institution\Resources\V1\BranchResource;
 
 class DonationItemResource extends JsonResource
 {
@@ -25,6 +22,7 @@ class DonationItemResource extends JsonResource
             'notes' => $this->notes,
 
             'unit' => new UnitResource($this->whenLoaded('unit')),
+            'donation-type' => new DonationTypeResource($this->whenLoaded('donationType')),
             'donation' => new DonationResource($this->whenLoaded('donation')),
         ];
     }

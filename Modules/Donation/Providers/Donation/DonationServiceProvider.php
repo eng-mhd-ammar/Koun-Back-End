@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Modules\Donation\Interfaces\V1\Donation\DonationRepositoryInterface;
 use Modules\Donation\Interfaces\V1\Donation\DonationServiceInterface;
 use Modules\Donation\Providers\DonationItem\DonationItemServiceProvider;
+use Modules\Donation\Providers\DonationRequest\DonationRequestServiceProvider;
+use Modules\Donation\Providers\DonationType\DonationTypeServiceProvider;
 use Modules\Donation\Providers\Unit\UnitServiceProvider;
 use Modules\Donation\Repositories\V1\DonationRepository;
 use Modules\Donation\Services\V1\DonationService;
@@ -21,6 +23,8 @@ class DonationServiceProvider extends ServiceProvider
 
         $this->app->register(UnitServiceProvider::class);
         $this->app->register(DonationItemServiceProvider::class);
+        $this->app->register(DonationTypeServiceProvider::class);
+        $this->app->register(DonationRequestServiceProvider::class);
     }
 
     public function boot(): void
