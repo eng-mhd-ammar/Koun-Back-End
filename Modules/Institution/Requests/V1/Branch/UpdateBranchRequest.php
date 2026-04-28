@@ -11,12 +11,12 @@ class UpdateBranchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string'],
+            'name' => ['required', 'string'],
             'description' => ['string'],
-            'institution_id' => ['string', new NotSoftDeleted(Institution::class)],
-            'phone' => ['string', 'regex:/^\+9639\d{8}$/'],
-            'email' => ['email'],
-            'is_main_branch' => ['boolean', 'default:0'],
+            'institution_id' => ['required', 'string', new NotSoftDeleted(Institution::class)],
+            'phone' => ['required', 'string', 'regex:/^\+9639\d{8}$/'],
+            'email' => ['required', 'email'],
+            'is_main_branch' => ['boolean'],
         ];
     }
 }

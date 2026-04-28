@@ -17,6 +17,7 @@ class UserBranchResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'is_admin' => $this->is_admin,
 
             'user' => new UserResource($this->whenLoaded('user')),
             'branch' => new BranchResource($this->whenLoaded('branch')),

@@ -18,6 +18,7 @@ class BranchRepository extends BaseRepository implements BranchRepositoryInterfa
             AllowedFilter::exact('branch', 'id'),
             AllowedFilter::exact('institution', 'institution_id'),
             AllowedFilter::exact('main_branch', 'is_main_branch'),
+            AllowedFilter::scope('for_user', 'forUser')->default([1]),
         ];
     }
 

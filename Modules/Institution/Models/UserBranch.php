@@ -11,7 +11,7 @@ use Modules\Core\Observers\CRUDObserver;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Auth\Models\User;
 
-#[Fillable(['user_id', 'branch_id'])]
+#[Fillable(['user_id', 'branch_id', 'is_admin'])]
 #[ObservedBy([CRUDObserver::class])]
 class UserBranch extends Model
 {
@@ -23,6 +23,7 @@ class UserBranch extends Model
     protected $casts = [
         'user_id' => 'string',
         'branch_id' => 'string',
+        'is_admin' => 'boolean',
     ];
 
     public function user(): BelongsTo

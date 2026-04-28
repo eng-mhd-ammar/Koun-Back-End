@@ -18,6 +18,7 @@ class InstitutionRepository extends BaseRepository implements InstitutionReposit
             AllowedFilter::exact('institution', 'id'),
             AllowedFilter::exact('owner', 'owner_id'),
             AllowedFilter::exact('active', 'is_active'),
+            AllowedFilter::scope('for_user', 'forUser')->default([1]),
         ];
     }
 

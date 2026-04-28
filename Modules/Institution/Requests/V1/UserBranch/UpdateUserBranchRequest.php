@@ -14,6 +14,7 @@ class UpdateUserBranchRequest extends FormRequest
         return [
             'user_id' => ['string', new NotSoftDeleted(User::class)],
             'branch_id' => ['string', new NotSoftDeleted(Branch::class)],
+            'is_admin' => ['boolean'],
         ];
     }
 }

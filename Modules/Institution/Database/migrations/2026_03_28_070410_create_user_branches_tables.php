@@ -15,6 +15,7 @@ return new class () extends Migration {
 
             $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->boolean('is_admin')->default(false);
 
             $table->softDeletes();
             $table->timestamps();

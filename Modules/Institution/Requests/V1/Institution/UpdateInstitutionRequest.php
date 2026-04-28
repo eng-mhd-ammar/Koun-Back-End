@@ -9,6 +9,7 @@ use Modules\Core\Rules\FileOrUrl;
 use Modules\Core\Rules\NotSoftDeleted;
 use Modules\Core\Rules\ProhibitedUnlessHasRole;
 use Modules\Institution\Enums\InstitutionType;
+use Modules\Institution\Rules\IsUser;
 
 class UpdateInstitutionRequest extends FormRequest
 {
@@ -18,7 +19,7 @@ class UpdateInstitutionRequest extends FormRequest
             'logo' => [new FileOrUrl(['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'tif', 'webp', 'heic', 'heif', 'svg'])],
             'name' => ['string'],
             'description' => ['string'],
-            'owner_id' => ['string', new NotSoftDeleted(User::class), new ProhibitedUnlessHasRole(['admin'])],
+            'owner_id' => ['string', new NotSoftDeleted(User::class), new ProhibitedUnlessHasRole(['admin']), new IsUser],
             'phone' => ['string', 'regex:/^\+9639\d{8}$/'],
             'email' => ['email'],
             'type' => ['integer', new EnumRule(InstitutionType::class)],

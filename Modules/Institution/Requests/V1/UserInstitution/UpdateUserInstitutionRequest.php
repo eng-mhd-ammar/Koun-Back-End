@@ -14,6 +14,7 @@ class UpdateUserInstitutionRequest extends FormRequest
         return [
             'user_id' => ['string', new NotSoftDeleted(User::class)],
             'institution_id' => ['string', new NotSoftDeleted(Institution::class)],
+            'is_admin' => ['boolean'],
         ];
     }
 }

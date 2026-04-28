@@ -17,6 +17,7 @@ class UserInstitutionResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'is_admin' => $this->is_admin,
 
             'user' => new UserResource($this->whenLoaded('user')),
             'institution' => new InstitutionResource($this->whenLoaded('institution')),

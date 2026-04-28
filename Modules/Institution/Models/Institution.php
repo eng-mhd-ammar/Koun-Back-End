@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\Observers\CascadeSoftDeleteObserver;
 use Modules\Core\Observers\SyncFilesObserver;
@@ -14,6 +16,8 @@ use Modules\Core\Observers\CRUDObserver;
 use Modules\Institution\Enums\InstitutionType;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Auth\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 #[Fillable(['logo', 'name', 'description', 'owner_id', 'phone', 'email', 'type', 'is_active', 'attachments'])]
 #[ObservedBy([SyncFilesObserver::class, CascadeSoftDeleteObserver::class, CRUDObserver::class])]
@@ -41,6 +45,30 @@ class Institution extends Model
     protected $attributes = [
         'attachments' => '[]',
     ];
+
+    public function employees(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => collect()
+                ->when($this->owner, fn ($c) => $c->push($this->owner))
+                ->merge($this->members)
+                ->unique('id')
+                ->values()
+        );
+    }
+
+    public function admins(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => collect()
+                ->when($this->owner, fn ($c) => $c->push($this->owner))
+                ->merge(
+                    $this->members->filter(fn ($member) => $member->pivot?->is_admin)
+                )
+                ->unique('id')
+                ->values()
+        );
+    }
 
     public function logoUrl(): Attribute
     {
@@ -76,5 +104,26 @@ class Institution extends Model
     public function members(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_institutions', 'institution_id', 'user_id');
+    }
+
+    public function scopeForUser(Builder $query, bool $value = false): Builder
+    {
+        $user = Auth::user();
+
+        if (!$value) {
+            if($user->is_admin) {
+                return $query;
+            } else {
+                $value = !$value;
+            }
+        }
+
+        return $query->where(function ($q) use ($user) {
+
+            $q->where('owner_id', $user->id)
+            ->orWhereHas('members', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
+        });
     }
 }

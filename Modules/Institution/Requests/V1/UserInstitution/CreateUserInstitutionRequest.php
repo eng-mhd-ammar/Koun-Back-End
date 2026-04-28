@@ -14,6 +14,7 @@ class CreateUserInstitutionRequest extends FormRequest
         return [
             'user_id' => ['required', 'string', new NotSoftDeleted(User::class)],
             'institution_id' => ['required', 'string', new NotSoftDeleted(Institution::class)],
+            'is_admin' => ['boolean', 'default:0'],
         ];
     }
 }
