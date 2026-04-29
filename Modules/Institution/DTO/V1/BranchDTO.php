@@ -15,6 +15,8 @@ class BranchDTO extends BaseDTO
         public ?string $phone,
         public ?string $email,
         public ?bool $is_main_branch,
+        public ?array $address,
+        public ?array $users,
     ) {
     }
 
@@ -27,6 +29,8 @@ class BranchDTO extends BaseDTO
             phone: $request->validated('phone'),
             email: $request->validated('email'),
             is_main_branch: $request->validated('is_main_branch'),
+            address: $request->validated('address'),
+            users: self::prepareRequestArray($request->validated('users')),
         );
     }
 }

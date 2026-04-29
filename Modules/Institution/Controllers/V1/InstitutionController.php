@@ -30,6 +30,7 @@ class InstitutionController extends BaseController
 
     public function create(CreateInstitutionRequest $request)
     {
+
         $this->modelService->create(InstitutionDTO::fromRequest($request));
         return (new Response())->success(message: "Institution created successfully.", code: Response::HTTP_CREATED);
     }

@@ -39,4 +39,35 @@ class Address extends Model
     {
         return $this->belongsTo(State::class);
     }
+
+    public function scopeForUser(Builder $query, bool $value = false): Builder
+    {
+        $user = Auth::user();
+
+        if (!$value) {
+            if ($user->is_admin) {
+                return $query;
+            } else {
+                $value = true;
+            }
+        }
+
+        return $query->whereHas('branch', function ($q) use ($user) {
+
+            $q->whereHas('members', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            })
+
+            ->orWhereHas('institution', function ($q) use ($user) {
+
+                $q->where('owner_id', $user->id)
+
+                ->orWhereHas('members', function ($q) use ($user) {
+                    $q->where('user_id', $user->id);
+                });
+
+            });
+
+        });
+    }
 }

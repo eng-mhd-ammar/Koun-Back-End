@@ -18,6 +18,7 @@ class InstitutionDTO extends BaseDTO
         public ?int $type,
         public ?bool $is_active,
         public ?array $attachments,
+        public ?array $users,
     ) {
     }
 
@@ -33,6 +34,7 @@ class InstitutionDTO extends BaseDTO
             type: $request->validated('type'),
             is_active: $request->validated('is_active'),
             attachments: self::handleMultipleFilesStoring($request->validated('attachments'), '/institutions/attachments'),
+            users: self::prepareRequestArray($request->validated('users')),
         );
     }
 }

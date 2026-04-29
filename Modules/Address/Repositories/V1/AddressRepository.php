@@ -19,6 +19,7 @@ class AddressRepository extends BaseRepository implements AddressRepositoryInter
             AllowedFilter::exact('institution', 'institution_id'),
             AllowedFilter::exact('branch', 'branch_id'),
             AllowedFilter::exact('state', 'state_id'),
+            AllowedFilter::scope('for_user', 'forUser')->default([1]),
         ];
     }
 

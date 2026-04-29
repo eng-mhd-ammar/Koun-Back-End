@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\Observers\CascadeSoftDeleteObserver;
 use Modules\Core\Observers\CRUDObserver;
@@ -16,6 +17,7 @@ use Modules\Auth\Models\User;
 use Modules\Donation\Models\Donation;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use Modules\Address\Models\Address;
 
 #[Fillable(['name', 'description', 'institution_id', 'phone', 'email', 'is_main_branch'])]
 #[ObservedBy([CascadeSoftDeleteObserver::class, CRUDObserver::class])]
@@ -28,7 +30,7 @@ class Branch extends Model
 
     public array $FilesFields = ['logo', 'attachments'];
 
-    public array $cascadeDeletes = ['userBranches'];
+    public array $cascadeDeletes = ['userBranches', 'address'];
 
     protected $casts = [
         'name' => 'string',
@@ -91,6 +93,11 @@ class Branch extends Model
         );
     }
 
+    public function address(): HasOne
+    {
+        return $this->hasOne(Address::class, 'branch_id', 'id');
+    }
+
     public function institution(): BelongsTo
     {
         return $this->belongsTo(Institution::class, 'institution_id', 'id');
@@ -121,7 +128,7 @@ class Branch extends Model
         $user = Auth::user();
 
         if (!$value) {
-            if($user->is_admin) {
+            if ($user->is_admin) {
                 return $query;
             } else {
                 $value = !$value;

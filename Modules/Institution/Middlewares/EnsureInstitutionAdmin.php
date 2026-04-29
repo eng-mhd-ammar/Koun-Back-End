@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Modules\Core\Utilities\Response as UtilitiesResponse;
-use Modules\Institution\Models\Branch;
 use Modules\Institution\Models\Institution;
 
 class EnsureInstitutionAdmin

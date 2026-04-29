@@ -111,7 +111,7 @@ class Institution extends Model
         $user = Auth::user();
 
         if (!$value) {
-            if($user->is_admin) {
+            if ($user->is_admin) {
                 return $query;
             } else {
                 $value = !$value;

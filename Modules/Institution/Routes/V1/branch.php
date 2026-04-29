@@ -15,7 +15,7 @@ Route::middleware(['auth:api'])->group(function (): void {
         Route::delete('/delete/{modelId}', 'delete');
     });
 
-    Route::middleware([new IsAdmin])->group(function (): void {
+    Route::middleware([IsAdmin::class])->group(function (): void {
         Route::delete('/force-delete/{modelId}', 'forceDelete');
         Route::get('/restore/{modelId}', 'restore');
     });

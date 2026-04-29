@@ -14,11 +14,15 @@ class IsUser implements ValidationRule
      */
     public function validate($attribute, $value, $fail): void
     {
-        if (is_null($value)) return;
+        if (is_null($value)) {
+            return;
+        }
 
         $user = User::query()->findOrFail($value);
 
-        if($user->is_user) return;
+        if ($user->is_user) {
+            return;
+        }
 
         $fail("The selected {$attribute} is not a user.");
     }
