@@ -5,12 +5,13 @@ namespace Modules\Address\Middlewares;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Modules\Address\Models\Address;
 use Modules\Core\Utilities\Response as UtilitiesResponse;
 use Modules\Institution\Models\Branch;
 
 class IsBranchAdmin
 {
-    public function handle(Request $request, Closure $next, string $scope)
+    public function handle(Request $request, Closure $next)
     {
         $user = Auth::guard('api')->user();
 
@@ -37,10 +38,13 @@ class IsBranchAdmin
 
     private function checkBranch(Request $request, int $userId): bool
     {
-        $branch = Branch::findOrFail($request->input('branch_id'));
-        if (!$branch) {
-            return true;
+        $address = Address::find($request->route('modelId'));
+
+        if (!$address || !$address->branch) {
+            return false;
         }
+
+        $branch = $address->branch;
 
         return
             $branch->institution?->owner_id === $userId

@@ -58,8 +58,7 @@ class Branch extends Model
 
                     ->unique('id')
 
-                    ->values()
-                    ->toArray();
+                    ->values();
             }
         );
     }
@@ -87,8 +86,7 @@ class Branch extends Model
                     )
 
                     ->unique('id')
-                    ->values()
-                    ->toArray();
+                    ->values();
             }
         );
     }
