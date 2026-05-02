@@ -12,7 +12,7 @@ class UpdateDonationTypeRequest extends FormRequest
     {
         return [
             'name' => ['string', 'max:255'],
-            'donation_type_id' => ['string', new NotSoftDeleted(DonationType::class)],
+            'donation_type_id' => ['string', new NotSoftDeleted(DonationType::class, $this->route('modelId'))],
         ];
     }
 }

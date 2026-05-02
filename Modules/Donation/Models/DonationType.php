@@ -20,7 +20,7 @@ class DonationType extends Model
 
     public string $logChannel = "donation-type";
 
-    public array $cascadeDeletes = ['donationItems'];
+    public array $cascadeDeletes = ['donationItems', 'children'];
 
     protected $casts = [
         'name' => 'string',
