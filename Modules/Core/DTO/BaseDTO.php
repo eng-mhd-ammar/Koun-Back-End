@@ -135,10 +135,15 @@ class BaseDTO
         if (!is_array($data)) {
             return null;
         }
-        if (empty($data) || $data[0] == -1) {
+    
+        if (empty($data)) {
             return [];
         }
-
+    
+        if (in_array(-1, $data, true)) {
+            return [];
+        }
+    
         return $data;
     }
 

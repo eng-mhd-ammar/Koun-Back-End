@@ -17,6 +17,8 @@ class DonationDTO extends BaseDTO
         public ?int $status,
         public ?Carbon $sent_at,
         public ?string $notes,
+
+        public ?array $items = null,
     ) {
     }
 
@@ -30,6 +32,7 @@ class DonationDTO extends BaseDTO
             status: $request->validated('status'),
             sent_at: self::prepareDateTime($request->validated('sent_at')),
             notes: $request->validated('notes'),
+            items: self::prepareRequestArray($request->validated('items')),
         );
     }
 }

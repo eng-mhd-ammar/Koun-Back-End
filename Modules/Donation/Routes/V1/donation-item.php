@@ -9,7 +9,7 @@ Route::middleware(['auth:api'])->group(function (): void {
     Route::get('/', 'index');
     Route::get('/show/{modelId}', 'show');
 
-    Route::middleware([])->group(function (): void {
+    Route::middleware(['donation_owner:donation_item'])->group(function (): void {
         Route::post('/create', 'create');
         Route::delete('/delete/{modelId}', 'delete');
         Route::post('/update/{modelId}', 'update');

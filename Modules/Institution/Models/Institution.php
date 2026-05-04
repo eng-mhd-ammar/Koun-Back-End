@@ -49,24 +49,28 @@ class Institution extends Model
     public function employees(): Attribute
     {
         return Attribute::make(
-            get: fn () => collect()
-                ->when($this->owner, fn ($c) => $c->push($this->owner))
-                ->merge($this->members)
-                ->unique('id')
-                ->values()
+            get: fn () => collect([
+                $this->owner,
+                ...$this->members ?? []
+            ])
+            ->filter()
+            ->unique('id')
+            ->values()
         );
     }
 
     public function admins(): Attribute
     {
         return Attribute::make(
-            get: fn () => collect()
-                ->when($this->owner, fn ($c) => $c->push($this->owner))
-                ->merge(
-                    $this->members->filter(fn ($member) => $member->pivot?->is_admin)
-                )
-                ->unique('id')
-                ->values()
+            get: fn () => collect([
+                $this->owner,
+                ...($this->members?->filter(
+                    fn ($member) => $member->pivot?->is_admin
+                ) ?? [])
+            ])
+            ->filter()
+            ->unique('id')
+            ->values()
         );
     }
 
@@ -125,5 +129,17 @@ class Institution extends Model
                 $q->where('user_id', $user->id);
             });
         });
+    }
+
+    public function isEmployee($user): bool
+    {
+        return $this->employees
+            ->contains('id', $user->id);
+    }
+
+    public function isAdmin($user): bool
+    {
+        return $this->admins
+            ->contains('id', $user->id);
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Exceptions\ExceptionsHandler;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Modules\Donation\Middlewares\DonationOwner;
 use Modules\Institution\Middlewares\EnsureAdminAccess;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -15,7 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'ensure_institution_admin' => EnsureAdminAccess::class
+            'ensure_institution_admin' => EnsureAdminAccess::class,
+            'donation_owner' => DonationOwner::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

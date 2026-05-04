@@ -6,7 +6,10 @@ use Illuminate\Foundation\Http\FormRequest;
 use Modules\Auth\Models\User;
 use Modules\Core\Rules\EnumRule;
 use Modules\Core\Rules\NotSoftDeleted;
+use Modules\Core\Rules\ProhibitedUnlessHasRole;
 use Modules\Donation\Enums\DonationStatus;
+use Modules\Donation\Models\DonationType;
+use Modules\Donation\Models\Unit;
 use Modules\Institution\Models\Branch;
 
 class CreateDonationRequest extends FormRequest
@@ -15,14 +18,21 @@ class CreateDonationRequest extends FormRequest
     {
         return [
             'sender_branch_id' => ['string', new NotSoftDeleted(Branch::class)],
-
-            'sender_user_id' => ['required', 'string', new NotSoftDeleted(User::class)],
+            'sender_user_id' => ['required', 'string', new NotSoftDeleted(User::class), new ProhibitedUnlessHasRole(['admin'], auth()->id())],
 
             'title' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string', 'max:255'],
-            'status' => ['required', 'numeric', new EnumRule(DonationStatus::class), 'default:' . DonationStatus::PENDING->value],
+            'description' => ['nullable', 'string', 'max:255'],
+            'status' => ['required', 'numeric', new EnumRule(DonationStatus::class), 'default:' . DonationStatus::PENDING->value, new ProhibitedUnlessHasRole(['admin', DonationStatus::PENDING->value])],
             'sent_at' => ['nullable', 'date'],
             'notes' => ['nullable', 'string'],
+
+            'items' => ['required', 'array', 'min:1'],
+            'items.unit_id' => ['required', 'string', new NotSoftDeleted(Unit::class)],
+            'items.donation_type_id' => ['required', 'string', new NotSoftDeleted(DonationType::class)],
+            'items.name' => ['required', 'string', 'max:255'],
+            'items.description' => ['string'],
+            'items.quantity' => ['required', 'numeric', 'greater_than:0'],
+            'items.notes' => ['required', 'string'],
         ];
     }
 }
