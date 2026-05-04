@@ -18,7 +18,7 @@ class UpdateDonationItemRequest extends FormRequest
             'donation_type_id' => ['string', new NotSoftDeleted(DonationType::class)],
             'name' => ['string', 'max:255'],
             'description' => ['string'],
-            'quantity' => ['string', 'min:0'],
+            'quantity' => ['numeric', 'greater_than:0'],
             'notes' => ['string'],
         ];
     }

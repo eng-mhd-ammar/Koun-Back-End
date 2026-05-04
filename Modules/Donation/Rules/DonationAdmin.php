@@ -1,11 +1,12 @@
 <?php
 
-namespace Modules\Institution\Rules;
+namespace Modules\Donation\Rules;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Modules\Auth\Models\User;
+use Modules\Donation\Models\Donation;
 
-class IsUser implements ValidationRule
+class DonationAdmin implements ValidationRule
 {
     /**
      * @param  string  $attribute
@@ -18,12 +19,8 @@ class IsUser implements ValidationRule
             return;
         }
 
-        $user = User::query()->findOrFail($value);
+        $donation = Donation::query()->findOrFail($value);
+        if(is_array($donation->))
 
-        if ($user->is_user) {
-            return;
-        }
-
-        $fail("The selected {$attribute} is not a user.");
     }
 }

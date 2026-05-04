@@ -12,7 +12,7 @@ class CreateDonationTypeRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'donation_type_id' => ['required', 'string', new NotSoftDeleted(DonationType::class)],
+            'donation_type_id' => ['string', new NotSoftDeleted(DonationType::class)],
         ];
     }
 }
