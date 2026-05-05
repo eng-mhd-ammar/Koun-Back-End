@@ -46,6 +46,20 @@ class Institution extends Model
         'attachments' => '[]',
     ];
 
+    public function isDonor(): Attribute
+    {
+        return new Attribute(
+            get: fn () => in_array($this->type, [InstitutionType::DONOR, InstitutionType::BOTH]),
+        );
+    }
+
+    public function isCharity(): Attribute
+    {
+        return new Attribute(
+            get: fn () => in_array($this->type, [InstitutionType::CHARITY, InstitutionType::BOTH]),
+        );
+    }
+
     public function employees(): Attribute
     {
         return Attribute::make(

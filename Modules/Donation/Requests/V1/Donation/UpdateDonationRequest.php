@@ -11,6 +11,7 @@ use Modules\Donation\Enums\DonationStatus;
 use Modules\Donation\Models\DonationItem;
 use Modules\Donation\Models\DonationType;
 use Modules\Donation\Models\Unit;
+use Modules\Donation\Rules\IsDonor;
 use Modules\Institution\Models\Branch;
 
 class UpdateDonationRequest extends FormRequest
@@ -19,7 +20,7 @@ class UpdateDonationRequest extends FormRequest
     {
         return [
             'sender_branch_id' => ['string', new NotSoftDeleted(Branch::class)],
-            'sender_user_id' => ['string', new NotSoftDeleted(User::class), new ProhibitedUnlessHasRole(['admin'], auth()->id())],
+            'sender_user_id' => ['string', new NotSoftDeleted(User::class), new ProhibitedUnlessHasRole(['admin'], auth()->id()), new IsDonor()],
 
             'title' => ['string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],

@@ -10,6 +10,7 @@ use Modules\Core\Rules\ProhibitedUnlessHasRole;
 use Modules\Donation\Enums\DonationStatus;
 use Modules\Donation\Models\DonationType;
 use Modules\Donation\Models\Unit;
+use Modules\Donation\Rules\IsDonor;
 use Modules\Institution\Models\Branch;
 
 class CreateDonationRequest extends FormRequest
@@ -18,7 +19,7 @@ class CreateDonationRequest extends FormRequest
     {
         return [
             'sender_branch_id' => ['string', new NotSoftDeleted(Branch::class)],
-            'sender_user_id' => ['required', 'string', new NotSoftDeleted(User::class), new ProhibitedUnlessHasRole(['admin'], auth()->id())],
+            'sender_user_id' => ['required', 'string', new NotSoftDeleted(User::class), new ProhibitedUnlessHasRole(['admin'], auth()->id()), new IsDonor()],
 
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],

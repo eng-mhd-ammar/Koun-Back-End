@@ -5,8 +5,9 @@ namespace Modules\Donation\Rules;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Modules\Auth\Models\User;
 use Modules\Donation\Models\Donation;
+use Modules\Institution\Models\Branch;
 
-class DonationAdmin implements ValidationRule
+class IsCharity implements ValidationRule
 {
     /**
      * @param  string  $attribute
@@ -19,8 +20,10 @@ class DonationAdmin implements ValidationRule
             return;
         }
 
-        $donation = Donation::query()->findOrFail($value);
-        if(is_array($donation->))
+        $branch = Branch::findOrFail($value);
 
+        if (!$branch->institution->is_charity) {
+            $fail('The selected institution is not a charity.');
+        }
     }
 }

@@ -23,6 +23,8 @@ class InstitutionResource extends JsonResource
             'phone' => $this->phone,
             'email' => $this->email,
             'type' => $this->type->label(),
+            'is_donor' => $this->is_donor,
+            'is_charity' => $this->is_charity,
             'is_active' => $this->is_active,
             'gender' => $this->gender,
             'attachments' => $this->attachments_urls,
