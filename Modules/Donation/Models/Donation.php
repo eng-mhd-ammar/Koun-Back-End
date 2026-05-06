@@ -44,6 +44,27 @@ class Donation extends Model
         );
     }
 
+    public function isApproved(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->status === DonationStatus::APPROVED,
+        );
+    }
+
+    public function isRejected(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->status === DonationStatus::REJECTED,
+        );
+    }
+
+    public function isPending(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->status === DonationStatus::PENDING,
+        );
+    }
+
     public function senderBranch(): BelongsTo
     {
         return $this->belongsTo(Branch::class, 'sender_branch_id', 'id');

@@ -4,6 +4,7 @@ namespace Modules\Donation\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\Observers\CRUDObserver;
@@ -31,6 +32,27 @@ class DonationRequest extends Model
         'status' => DonationRequestStatus::class,
         'notes' => 'string',
     ];
+
+    public function isApproved(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->status === DonationRequestStatus::APPROVED,
+        );
+    }
+
+    public function isRejected(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->status === DonationRequestStatus::REJECTED,
+        );
+    }
+
+    public function isPending(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->status === DonationRequestStatus::PENDING,
+        );
+    }
 
     public function donation()
     {
