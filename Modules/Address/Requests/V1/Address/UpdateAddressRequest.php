@@ -21,7 +21,7 @@ class UpdateAddressRequest extends FormRequest
             'street' => ['string', 'max:255'],
             'latitude' => ['numeric', 'between:-90,90'],
             'longitude' => ['numeric', 'between:-180,180'],
-            'details' => ['string'],
+            'details' => ['nullable', 'string'],
         ];
     }
 }
