@@ -17,6 +17,7 @@ use Modules\Core\Observers\CascadeSoftDeleteObserver;
 use Modules\Core\Observers\SyncFilesObserver;
 use Modules\Core\Observers\CRUDObserver;
 use Modules\Donation\Models\Donation;
+use Modules\Donation\Models\DonationRequest;
 use Modules\Institution\Models\Institution;
 use Modules\Institution\Models\UserBranch;
 use Spatie\Permission\Traits\HasPermissions;
@@ -137,13 +138,13 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany(Institution::class, 'user_institutions', 'user_id', 'institution_id');
     }
 
-    public function donationsSent(): HasMany
+    public function donations(): HasMany
     {
         return $this->hasMany(Donation::class, 'sender_user_id', 'id');
     }
 
-    public function donationsReceived(): HasMany
+    public function donationsRequests(): HasMany
     {
-        return $this->hasMany(Donation::class, 'receiver_user_id', 'id');
+        return $this->hasMany(DonationRequest::class, 'receiver_user_id', 'id');
     }
 }

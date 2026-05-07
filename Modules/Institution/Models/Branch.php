@@ -18,6 +18,7 @@ use Modules\Donation\Models\Donation;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Modules\Address\Models\Address;
+use Modules\Donation\Models\DonationRequest;
 
 #[Fillable(['name', 'description', 'institution_id', 'phone', 'email', 'is_main_branch'])]
 #[ObservedBy([CascadeSoftDeleteObserver::class, CRUDObserver::class])]
@@ -111,14 +112,14 @@ class Branch extends Model
         return $this->belongsToMany(User::class, 'user_branches', 'branch_id', 'user_id');
     }
 
-    public function donationsSent(): HasMany
+    public function donations(): HasMany
     {
         return $this->hasMany(Donation::class, 'sender_branch_id', 'id');
     }
 
-    public function donationsReceived(): HasMany
+    public function donationsRequests(): HasMany
     {
-        return $this->hasMany(Donation::class, 'receiver_branch_id', 'id');
+        return $this->hasMany(DonationRequest::class, 'receiver_branch_id', 'id');
     }
 
     public function scopeForUser(Builder $query, bool $value = false): Builder
@@ -157,7 +158,7 @@ class Branch extends Model
         return $this->employees
             ->contains('id', $user->id);
     }
-    
+
     public function isAdmin($user): bool
     {
         return $this->admins

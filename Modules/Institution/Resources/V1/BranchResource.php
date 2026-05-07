@@ -4,7 +4,10 @@ namespace Modules\Institution\Resources\V1;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Address\Resources\V1\AddressResource;
 use Modules\Auth\Resources\V1\UserResource;
+use Modules\Donation\Resources\V1\DonationRequestResource;
+use Modules\Donation\Resources\V1\DonationResource;
 
 class BranchResource extends JsonResource
 {
@@ -27,6 +30,10 @@ class BranchResource extends JsonResource
             'institution' => new InstitutionResource($this->whenLoaded('institution')),
             'members' => UserResource::collection($this->whenLoaded('members')),
             'user_branches' => UserBranchResource::collection($this->whenLoaded('userBranches')),
+            'address' => new AddressResource($this->whenLoaded('address')),
+
+            'donations' => DonationResource::collection($this->whenLoaded('donations')),
+            'donations_requests' => DonationRequestResource::collection($this->whenLoaded('donationsRequests')),
         ];
     }
 }

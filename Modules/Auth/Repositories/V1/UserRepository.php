@@ -28,8 +28,8 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             AllowedInclude::relationship('member_institutions', 'memberInstitutions'),
             AllowedInclude::relationship('user_branches', 'userBranches'),
             AllowedInclude::relationship('branches'),
-            AllowedInclude::relationship('donations_sent', 'donationsSent'),
-            AllowedInclude::relationship('donations_received', 'donationsReceived'),
+            AllowedInclude::relationship('donations.donation_items', 'donations.donationItems'),
+            AllowedInclude::relationship('donations_requests.donation_items', 'donationsRequests.donationItems'),
         ];
     }
 }

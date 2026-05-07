@@ -4,6 +4,7 @@ namespace Modules\Auth\Resources\V1;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Donation\Resources\V1\DonationRequestResource;
 use Modules\Donation\Resources\V1\DonationResource;
 use Modules\Institution\Resources\V1\BranchResource;
 use Modules\Institution\Resources\V1\InstitutionResource;
@@ -35,8 +36,8 @@ class ProfileResource extends JsonResource
             'user_branches' => UserBranchResource::collection($this->whenLoaded('userBranches')),
             'branches' => BranchResource::collection($this->whenLoaded('branches')),
 
-            'donations_sent' => DonationResource::collection($this->whenLoaded('donationsSent')),
-            'donations_received' => DonationResource::collection($this->whenLoaded('donationsReceived')),
+            'donations' => DonationResource::collection($this->whenLoaded('donations')),
+            'donations_requests' => DonationRequestResource::collection($this->whenLoaded('donationsRequests')),
         ];
     }
 }
