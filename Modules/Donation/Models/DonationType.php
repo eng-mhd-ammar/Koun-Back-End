@@ -11,7 +11,7 @@ use Modules\Core\Observers\CRUDObserver;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Observers\CascadeSoftDeleteObserver;
 
-#[Fillable(['name', 'donation_type_id'])]
+#[Fillable(['name', 'parent_id'])]
 #[ObservedBy([CRUDObserver::class, CascadeSoftDeleteObserver::class])]
 class DonationType extends Model
 {
@@ -24,7 +24,7 @@ class DonationType extends Model
 
     protected $casts = [
         'name' => 'string',
-        'donation_type_id' => 'string',
+        'parent_id' => 'string',
     ];
 
     public function donationItems(): HasMany
@@ -34,11 +34,11 @@ class DonationType extends Model
 
     public function parent()
     {
-        return $this->belongsTo(DonationType::class, 'donation_type_id', 'id');
+        return $this->belongsTo(DonationType::class, 'parent_id', 'id');
     }
 
     public function children()
     {
-        return $this->hasMany(DonationType::class, 'donation_type_id', 'id');
+        return $this->hasMany(DonationType::class, 'parent_id', 'id');
     }
 }

@@ -14,7 +14,7 @@ return new class () extends Migration {
             $table->id();
 
             $table->string('name');
-            $table->foreignId('donation_type_id')->nullable()->constrained('donation_types')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('parent_id')->nullable()->constrained('donation_types')->onDelete('cascade')->onUpdate('cascade');
 
             $table->softDeletes();
             $table->timestamps();

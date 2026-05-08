@@ -17,10 +17,9 @@ class UnitResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'description' => $this->description,
 
-            'parent' => new DonationTypeResource($this->whenLoaded('parent')),
-            'children' => DonationTypeResource::collection($this->whenLoaded('children')),
-            'donation_items' => DonationItemResource::collection($this->whenLoaded('DonationItems')),
+            'donation_items' => DonationItemResource::collection($this->whenLoaded('donationItems')),
         ];
     }
 }

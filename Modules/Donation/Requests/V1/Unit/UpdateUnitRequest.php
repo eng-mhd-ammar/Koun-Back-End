@@ -10,7 +10,7 @@ class UpdateUnitRequest extends FormRequest
     {
         return [
             'name' => ['string', 'max:255'],
-            'description' => ['string'],
+            'description' => ['nullable', 'string'],
         ];
     }
 }

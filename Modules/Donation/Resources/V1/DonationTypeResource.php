@@ -18,7 +18,8 @@ class DonationTypeResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
 
-            'parent_don' => $this->description,
+            'parent' => new DonationTypeResource($this->whenLoaded('parent')),
+            'children' => DonationTypeResource::collection($this->whenLoaded('children')),
             'donation_items' => DonationItemResource::collection($this->whenLoaded('DonationItems')),
         ];
     }

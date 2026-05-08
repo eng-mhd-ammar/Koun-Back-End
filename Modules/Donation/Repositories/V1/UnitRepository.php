@@ -22,10 +22,10 @@ class UnitRepository extends BaseRepository implements UnitRepositoryInterface
     public function allowedIncludes(): array
     {
         return [
-            AllowedInclude::relationship('donation_item.donation.sender_user', 'DonationItems.donation.senderUser'),
-            AllowedInclude::relationship('donation_item.donation.receiver_user', 'DonationItems.donation.receiverUser'),
-            AllowedInclude::relationship('donation_item.donation.sender_branch.institution', 'DonationItems.donation.senderBranch.institution'),
-            AllowedInclude::relationship('donation_item.donation.receiver_branch.institution', 'DonationItems.donation.receiverBranch.institution'),
+            AllowedInclude::relationship('donation_items.donation.sender_user', 'donationItems.donation.senderUser'),
+            AllowedInclude::relationship('donation_items.donation.donation_requests.receiver_user', 'donationItems.donation.donationRequests.receiverUser'),
+            AllowedInclude::relationship('donation_items.donation.sender_branch.institution', 'donationItems.donation.senderBranch.institution'),
+            AllowedInclude::relationship('donation_items.donation.donation_requests.receiver_branch.institution', 'donationItems.donation.donationRequests.receiverBranch.institution'),
         ];
     }
 }
