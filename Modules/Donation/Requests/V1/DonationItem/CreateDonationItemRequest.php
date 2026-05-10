@@ -17,9 +17,9 @@ class CreateDonationItemRequest extends FormRequest
             'unit_id' => ['required', 'string', new NotSoftDeleted(Unit::class)],
             'donation_type_id' => ['required', 'string', new NotSoftDeleted(DonationType::class)],
             'name' => ['required', 'string', 'max:255'],
-            'description' => ['string'],
-            'quantity' => ['required', 'numeric', 'greater_than:0'],
-            'notes' => ['required', 'string'],
+            'description' => ['nullable', 'string'],
+            'quantity' => ['required', 'numeric', 'gt:0'],
+            'notes' => ['nullable', 'string'],
         ];
     }
 }

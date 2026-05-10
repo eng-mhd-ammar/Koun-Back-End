@@ -41,24 +41,40 @@ class DonationOwner
     // ========================= donation_owner:donation_item
     private function checkDonationItem(Request $request, $user): bool
     {
+        $donation = null;
+    
         $donationId = $request->input('donation_id');
 
-        if (!$donationId) {
-            $item = DonationItem::find($request->route('modelId'));
-            $donationId = $item?->donation_id;
+        if ($donationId) {
+            $donation = Donation::find($donationId);
         }
 
-        if (!$donationId) {
+        if (!$donation) {
+            $itemId = $request->route('modelId');
+
+            if ($itemId) {
+                $item = DonationItem::find($itemId);
+
+                if (!$item) {
+                    return false;
+                }
+
+                $donation = $item->donation;
+            }
+        }
+
+        if (!$donation) {
             return false;
         }
 
-        $donation = Donation::find($donationId);
+        $branch = $donation->senderBranch;
 
-        if (!$donation || !$donation->senderBranch) {
-            return false;
+        if (!$branch) {
+            return $donation->sender_user_id === $user->id;
         }
 
-        return $user->id === $donation->sender_user_id || $donation->senderBranch->isEmployee($user->id);
+        return $branch->isEmployee($user)
+            || $donation->sender_user_id === $user->id;
     }
 
     // ========================= donation_owner:donation
