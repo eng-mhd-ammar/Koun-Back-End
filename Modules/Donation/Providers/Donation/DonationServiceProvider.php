@@ -24,7 +24,6 @@ class DonationServiceProvider extends ServiceProvider
         $this->app->register(UnitServiceProvider::class);
         $this->app->register(DonationItemServiceProvider::class);
         $this->app->register(DonationTypeServiceProvider::class);
-        $this->app->register(DonationRequestServiceProvider::class);
     }
 
     public function boot(): void

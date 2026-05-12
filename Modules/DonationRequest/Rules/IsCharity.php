@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Donation\Rules;
+namespace Modules\DonationRequest\Rules;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Modules\Auth\Models\User;

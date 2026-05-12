@@ -7,7 +7,7 @@ use Modules\DonationRequest\Interfaces\V1\DonationRequestItem\DonationRequestIte
 use Modules\DonationRequest\Interfaces\V1\DonationRequestItem\DonationRequestItemServiceInterface;
 use Modules\DonationRequest\Repositories\V1\DonationRequestItemRepository;
 use Modules\DonationRequest\Services\V1\DonationRequestItemService;
-use Modules\DonationRequestItem\Providers\DonationRequestItem\DonationRequestItemRouteServiceProvider;
+use Modules\DonationRequest\Providers\DonationRequestItem\DonationRequestItemRouteServiceProvider;
 
 class DonationRequestItemServiceProvider extends ServiceProvider
 {

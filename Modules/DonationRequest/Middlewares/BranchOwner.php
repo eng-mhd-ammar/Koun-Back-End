@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Core\Utilities\Response as UtilitiesResponse;
 use Modules\DonationRequest\Models\DonationItem;
 use Modules\DonationRequest\Models\DonationRequest;
+use Modules\DonationRequest\Models\DonationRequestItem;
 use Modules\Institution\Models\Branch;
 
 class BranchOwner
@@ -24,18 +25,18 @@ class BranchOwner
             return $next($request);
         }
 
-        $branchId = $request->input('receiver_branch_id');
-        $branch = null;
+        $donationRequestId = $request->input('donation_request_id');
+        $donationRequest = null;
 
-        if ($branchId)
-            $branch = Branch::findOrFail($branchId);
+        if ($donationRequestId)
+            $donationRequest = DonationRequest::findOrFail($donationRequestId);
         else
-            $branch = DonationRequest::query()->findOrFail($request->route('modelId'))->receiverBranch;
+            $donationRequest = DonationRequestItem::query()->findOrFail($request->route('modelId'))->donationRequest;
 
-        if($branch->isEmployee($user)) {
-            return $next($request);
+        if(!$donationRequest->receiverBranch->isEmployee($user)) {
+            return (new UtilitiesResponse)->error('You are not authorized to perform this action.', UtilitiesResponse::HTTP_FORBIDDEN);
         }
 
-        return (new UtilitiesResponse)->error('You are not authorized to perform this action.', UtilitiesResponse::HTTP_FORBIDDEN);
+        return $next($request);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\DonationRequestItem\Providers\DonationRequestItem;
+namespace Modules\DonationRequest\Providers\DonationRequestItem;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider;

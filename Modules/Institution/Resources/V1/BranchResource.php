@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Address\Resources\V1\AddressResource;
 use Modules\Auth\Resources\V1\UserResource;
-use Modules\Donation\Resources\V1\DonationRequestResource;
 use Modules\Donation\Resources\V1\DonationResource;
+use Modules\DonationRequest\Resources\V1\DonationRequestResource;
 
 class BranchResource extends JsonResource
 {

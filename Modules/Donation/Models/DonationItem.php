@@ -12,7 +12,7 @@ use Modules\Core\Observers\CRUDObserver;
 use Illuminate\Database\Eloquent\Model;
 use Modules\DonationRequest\Models\DonationRequestItem;
 
-#[Fillable(['donation_id', 'unit_id', 'donation_type_id', 'name', 'description', 'quantity', 'notes'])]
+#[Fillable(['donation_id', 'unit_id', 'donation_type_id', 'name', 'description', 'quantity', 'remaining_quantity', 'notes'])]
 #[ObservedBy([CRUDObserver::class])]
 class DonationItem extends Model
 {
@@ -27,7 +27,8 @@ class DonationItem extends Model
         'donation_type_id' => 'string',
         'name' => 'string',
         'description' => 'string',
-        'quantity' => 'string',
+        'quantity' => 'float',
+        'remaining_quantity' => 'float',
         'notes' => 'string',
     ];
 

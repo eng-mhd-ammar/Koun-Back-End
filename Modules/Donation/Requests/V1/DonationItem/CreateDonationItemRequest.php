@@ -19,6 +19,7 @@ class CreateDonationItemRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'quantity' => ['required', 'numeric', 'gt:0'],
+            'remaining_quantity' => ['required', 'numeric', 'gte:0'],
             'notes' => ['nullable', 'string'],
         ];
     }

@@ -19,6 +19,7 @@ class UpdateDonationItemRequest extends FormRequest
             'name' => ['string', 'max:255'],
             'description' => ['nullable', 'string'],
             'quantity' => ['numeric', 'gt:0'],
+            'remaining_quantity' => ['numeric', 'gte:0'],
             'notes' => ['nullable', 'string'],
         ];
     }

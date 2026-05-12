@@ -15,19 +15,19 @@ class DonationRequestItemRepository extends BaseRepository implements DonationRe
     public function allowedFilters(): array
     {
         return [
-            // AllowedFilter::exact('delivery', 'id'),
-            // AllowedFilter::exact('delivery', 'delivery_id'),
-            // AllowedFilter::exact('receiver', 'receiver_id'),
-            // AllowedFilter::exact('donation_request', 'donation_request_id'),
+            AllowedFilter::exact('donation_request_item', 'id'),
+            AllowedFilter::exact('donation_request', 'donation_request_id'),
+            AllowedFilter::exact('donation_item', 'donation_item_id'),
         ];
     }
 
     public function allowedIncludes(): array
     {
         return [
-            // AllowedInclude::relationship('delivery'),
-            // AllowedInclude::relationship('receiver'),
-            // AllowedInclude::relationship('donation_request', 'donationRequest'),
+            AllowedInclude::relationship('donation_request.receiver_branch.institution.owner', 'donationRequest.receiverBranch.institution.owner'),
+            AllowedInclude::relationship('donation_request.receiver_user', 'donationRequest.receiverUser'),
+            AllowedInclude::relationship('donation_item.donation.sender_branch.institution.owner', 'donationItem.donation.senderBranch.institution.owner'),
+            AllowedInclude::relationship('donation_item.donation.sender_user', 'donationItem.donation.senderUser'),
         ];
     }
 }

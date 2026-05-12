@@ -14,7 +14,8 @@ class DonationItemDTO extends BaseDTO
         public ?string $donation_type_id,
         public ?string $name,
         public ?string $description,
-        public ?string $quantity,
+        public ?float $quantity,
+        public ?float $remaining_quantity,
         public ?string $notes,
     ) {
     }
@@ -28,6 +29,7 @@ class DonationItemDTO extends BaseDTO
             name: $request->validated('name'),
             description: $request->validated('description'),
             quantity: $request->validated('quantity'),
+            remaining_quantity: $request->validated('remaining_quantity'),
             notes: $request->validated('notes'),
         );
     }

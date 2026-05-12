@@ -14,8 +14,8 @@ return new class () extends Migration {
         Schema::create('donation_request_items', function (Blueprint $table): void {
             $table->id();
 
-            $table->foreignId('donation_request_id')->nullable()->constrained('donation-requests')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('donation_item_id')->nullable()->constrained('donation-items')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('donation_request_id')->nullable()->constrained('donation_requests')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('donation_item_id')->nullable()->constrained('donation_items')->onDelete('cascade')->onUpdate('cascade');
 
             $table->integer('requested_quantity')->default(1);
             $table->integer('approved_quantity')->nullable();

@@ -20,6 +20,7 @@ class DonationItemResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'quantity' => $this->quantity,
+            'remaining_quantity' => $this->remaining_quantity,
             'notes' => $this->notes,
 
             'unit' => new UnitResource($this->whenLoaded('unit')),

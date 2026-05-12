@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Donation\Resources\V1\DonationRequestResource;
 use Modules\Donation\Resources\V1\DonationResource;
+use Modules\DonationRequest\Resources\V1\DonationRequestResource as V1DonationRequestResource;
 use Modules\Institution\Resources\V1\BranchResource;
 use Modules\Institution\Resources\V1\InstitutionResource;
 use Modules\Institution\Resources\V1\UserBranchResource;
@@ -37,7 +38,7 @@ class UserResource extends JsonResource
             'branches' => BranchResource::collection($this->whenLoaded('branches')),
 
             'donations' => DonationResource::collection($this->whenLoaded('donations')),
-            'donations_requests' => DonationRequestResource::collection($this->whenLoaded('donationsRequests')),
+            'donations_requests' => V1DonationRequestResource::collection($this->whenLoaded('donationsRequests')),
         ];
     }
 }

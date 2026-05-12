@@ -19,7 +19,8 @@ return new class () extends Migration {
 
             $table->string('name');
             $table->string('description')->nullable();
-            $table->string('quantity');
+            $table->double('quantity');
+            $table->double('remaining_quantity')->default(0);
             $table->text('notes')->nullable();
 
             $table->softDeletes();
